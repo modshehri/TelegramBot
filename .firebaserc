@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "assesment-bot",
+    "staging": "assesment-bot"
+  }
+}
