@@ -3,7 +3,12 @@ const functions = require('firebase-functions');
 const { Telegraf } = require('telegraf')
 const fs = require('fs');
 
-const bot = new Telegraf("1524672304:AAGrFCVPWhYycjq_KA9YYfuvbltVZ7vj4qg")
+let config = require('./env.json')
+if (Object.keys(functions.config()).length){
+    config = functions.config()
+}
+
+const bot = new Telegraf(config.service.telegram_key)
 
 let orderNumber
 
@@ -11,7 +16,7 @@ bot.start((ctx) => {
     ctx.reply('Welcome dear '+ ctx.from.first_name +", we wish you are having a good day.\nProvide us with your shipment number please..")
     
     bot.on('message', (ctx) => {
-        let rawdata = fs.readFileSync('../orders.json');
+        let rawdata = fs.readFileSync('orders.json');
         let orders = JSON.parse(rawdata);
         orders = orders.orders
         msg = ctx.message.text
@@ -47,7 +52,7 @@ bot.action('wrongOrderNumber', (ctx) => {
 
 bot.action('correctOrderNumber', (ctx) => {
     ctx.deleteMessage
-    ctx.telegram.sendMessage(ctx.chat.id, "What is the shipmant status", {
+    ctx.telegram.sendMessage(ctx.chat.id, "What is the shipmant status.", {
         reply_markup: {
             inline_keyboard: [
                 [{text: "good",callback_data:"goodShipment"}, {text: "damaged",callback_data:"damagedShipment"}]
@@ -76,7 +81,7 @@ bot.action('goodShipment', (ctx) => {
 bot.action('unaccurateLocation', (ctx) => {
     ctx.deleteMessage
     ctx.reply("Sorry for that!! provide us with your location again please..")
-    bot.on('location', (ctx) => ctx.reply("Thank you for that"))
+    bot.on('location', (ctx) => ctx.reply("Thank you for that, we will deliver to this location next time.."))
 })
 
 bot.action('accurateLocation', (ctx) => {
@@ -98,8 +103,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'))
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-
 exports.helloWorld = functions.https.onRequest((request, response) => {
-   functions.logger.info("Hello logs!", {structuredData: true});
-   response.send("Hello from Firebase!");
- });
+    functions.logger.info("Hello logs!", {structuredData: true});
+    response.send("Hello from Firebase!");
+  });

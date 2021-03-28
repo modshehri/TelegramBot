@@ -1,0 +1,9 @@
+{
+    "orders": [ 
+        { "price":200, "status":"damaged" },
+        { "price":250, "status":"good" },
+        { "price":2000, "status":"damaged" },
+        { "price":400, "status":"damaged" },
+        { "price":670, "status":"good"  }
+    ]
+}
