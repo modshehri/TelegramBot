@@ -46,12 +46,12 @@ bot.start((ctx) => {
 })
 
 bot.action('wrongOrderNumber', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.reply("please double check and re-write the shipment number..")
 })
 
 bot.action('correctOrderNumber', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.telegram.sendMessage(ctx.chat.id, "What is the shipmant status.", {
         reply_markup: {
             inline_keyboard: [
@@ -62,13 +62,13 @@ bot.action('correctOrderNumber', (ctx) => {
 })
 
 bot.action('damagedShipment', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.reply("Sorry for that!! The issue have been reported and your monay will return to you\nTake a picture of the damage please..")
     bot.on('photo', (ctx) => ctx.reply("Thank you for that and we will reply to you soon"))
 })
 
 bot.action('goodShipment', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.telegram.sendMessage(ctx.chat.id, "Was the location accurate enough?", {
         reply_markup: {
             inline_keyboard: [
@@ -79,13 +79,13 @@ bot.action('goodShipment', (ctx) => {
 })
 
 bot.action('unaccurateLocation', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.reply("Sorry for that!! provide us with your location again please..")
     bot.on('location', (ctx) => ctx.reply("Thank you for that, we will deliver to this location next time.."))
 })
 
 bot.action('accurateLocation', (ctx) => {
-    ctx.deleteMessage
+    ctx.deleteMessage()
     ctx.reply("Thank you for your valuable information")
 })
 
