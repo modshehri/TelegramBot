@@ -15,7 +15,7 @@ let orderNumber
 bot.start((ctx) => {
     ctx.reply('Welcome dear '+ ctx.from.first_name +", we wish you are having a good day.\nProvide us with your shipment number please..")
     
-    bot.on('message', (ctx) => {
+    bot.on('text',(ctx) => {
         let rawdata = fs.readFileSync('orders.json');
         let orders = JSON.parse(rawdata);
         orders = orders.orders
@@ -28,6 +28,7 @@ bot.start((ctx) => {
             if (orderNumber > 4 || orderNumber < 0){
                 ctx.reply("Invalid shipment number, please double check and re-write the shipment number..")
             }else {
+                
                 msg = "Your order number is "+orderNumber+", its price is "+orders[orderNumber].price+" and its status is "+orders[orderNumber].status
                 ctx.telegram.sendMessage(ctx.chat.id, msg, {
                     reply_markup: {
@@ -64,7 +65,9 @@ bot.action('correctOrderNumber', (ctx) => {
 bot.action('damagedShipment', (ctx) => {
     ctx.deleteMessage()
     ctx.reply("Sorry for that!! The issue have been reported and your monay will return to you\nTake a picture of the damage please..")
-    bot.on('photo', (ctx) => ctx.reply("Thank you for that and we will reply to you soon"))
+    bot.on("photo", (ctx) => {
+        ctx.reply("Thank you for that, we will reply to you soon")
+    })
 })
 
 bot.action('goodShipment', (ctx) => {
@@ -81,7 +84,9 @@ bot.action('goodShipment', (ctx) => {
 bot.action('unaccurateLocation', (ctx) => {
     ctx.deleteMessage()
     ctx.reply("Sorry for that!! provide us with your location again please..")
-    bot.on('location', (ctx) => ctx.reply("Thank you for that, we will deliver to this location next time.."))
+    bot.on("location", (ctx) => {
+        ctx.reply("Thank you for that, we will deliver to this location next time..")
+    })
 })
 
 bot.action('accurateLocation', (ctx) => {
